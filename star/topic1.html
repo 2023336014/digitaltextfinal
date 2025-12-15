@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>별 헤는 밤 - 시어 분석 (AI)</title>
+    <style>
+        body { font-family: 'Malgun Gothic', sans-serif; padding: 25px; line-height: 1.8; color: #333; background-color: #f7f9fc; display: flex; flex-direction: column; }
+        h1 { color: #1e88e5; border-bottom: 2px solid #bbdefb; padding-bottom: 10px; margin-bottom: 20px; font-size: 1.8em; }
+        
+        .analysis-container { display: flex; gap: 20px; width: 100%; max-width: 900px; margin: 0 auto; }
+        
+        /* 시 전문 영역 */
+        .poem-area { 
+            flex: 1; 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+            overflow-y: auto;
+            font-size: 0.95em;
+        }
+        .poem-area pre { 
+            white-space: pre-wrap; /* 줄바꿈 유지 */
+            margin: 0; 
+            font-family: inherit;
+        }
+
+        /* 분석 활동 영역 */
+        .activity-area { 
+            flex: 1; 
+            background: #e3f2fd; 
+            padding: 20px; 
+            border-radius: 8px; 
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+        }
+        .activity-area h2 { color: #43a047; font-size: 1.3em; margin-top: 0; }
+
+        .input-group { margin-bottom: 15px; }
+        .input-group label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .input-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; resize: vertical; min-height: 100px; box-sizing: border-box; }
+        .input-group button { 
+            background-color: #1e88e5; 
+            color: white; 
+            padding: 10px 15px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            font-weight: bold; 
+            transition: background-color 0.2s;
+        }
+        .input-group button:hover { background-color: #1565c0; }
+
+        /* AI 피드백 영역 */
+        #aiFeedback { 
+            margin-top: 20px; 
+            padding: 15px; 
+            border: 2px dashed #4a90e2; 
+            background-color: #e8f5e9; 
+            border-radius: 4px; 
+            min-height: 50px; 
+        }
+        #aiFeedback p { margin: 0; color: #00796b; font-weight: 500; }
+    </style>
+</head>
+<body>
+
+    <h1>시어 분석: AI 피드백 활동</h1>
+    
+    <div class="analysis-container">
+        <div class="poem-area">
+            <h2>별 헤는 밤 전문</h2>
+            <pre>
+계절이 지나가는 하늘에는
+가을로 가득 차 있습니다.
+나는 아무 걱정도 없이
+가을 속의 별들을 다 헤일 듯합니다.
+
+가슴 속에 하나 둘 새겨지는 별을
+이제 다 못 헤는 것은
+쉬이 아침이 오는 까닭이요,
+내일 밤이 남은 까닭이요,
+아직 나의 청춘이 다하지 않은 까닭입니다.
+
+별 하나에 추억과
+별 하나의 사랑과
+별 하나에 쓸쓸함과
+별 하나에 동경과
+별 하나에 시와
+별 하나에 어머니, 어머니,
+어머님, 나는 별 하나에 아름다운 말 한 마디씩 불러 봅니다.
+이네들은 너무나 멀리 있습니다.
+별이 아슬히 멀듯이,
+어머님,
+그리고 당신은 멀리 북간도에 계십니다.
+
+나는 무엇인지 그리워
+이 많은 별빛이 내린 언덕 위에
+내 이름자를 써 보고,
+흙으로 덮어 버리었습니다.
+딴은 밤을 새워 우는 벌레는
+부끄러운 이름을 슬퍼하는 까닭입니다.
+
+그러나 겨울이 지나고 나의 별에도 봄이 오면
+무덤 위에 파란 잔디가 피어나듯이
+내 이름자 묻힌 언덕 위에도
+자랑처럼 풀이 무성할 거외다.
+            </pre>
+        </div>
+
+        <div class="activity-area">
+            <h2>나의 시어 해석 및 AI 검토</h2>
+            <div class="input-group">
+                <label for="wordInput">⭐ 분석할 시어 (또는 구절) 입력:</label>
+                <input type="text" id="wordInput" placeholder="예: 부끄러운 이름" style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc;">
+            </div>
+            <div class="input-group">
+                <label for="interpretation">나의 해석 (20자 이상):</label>
+                <textarea id="interpretation" placeholder="이 시어(구절)는 내게 어떤 의미로 다가오는지 자유롭게 적어주세요."></textarea>
+            </div>
+            
+            <div class="input-group">
+                <button onclick="requestAIFeedback()">AI에게 분석 요청</button>
+            </div>
+
+            <div id="aiFeedback">
+                <p>💡 AI 피드백을 기다리고 있습니다. 분석을 요청해 보세요.</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function requestAIFeedback() {
+            const word = document.getElementById('wordInput').value.trim();
+            const interpretation = document.getElementById('interpretation').value.trim();
+            const feedbackArea = document.getElementById('aiFeedback');
+            
+            if (word.length < 1 || interpretation.length < 10) {
+                feedbackArea.innerHTML = "<p style='color: #d9534f;'>🚨 시어와 해석을 모두 입력해 주세요. 해석은 10자 이상 필요합니다.</p>";
+                return;
+            }
+
+            // AI 피드백 시뮬레이션
+            let feedback = "";
+            let standardizedMeaning = "";
+            
+            // 시어에 따른 시뮬레이션 응답 (주요 시어 예시)
+            if (word.includes("별")) {
+                standardizedMeaning = "시인에게 '별'은 이상, 동경, 추억, 그리고 어머니의 사랑처럼 소중한 가치를 상징하는 존재입니다. 이 별을 헤는 행위는 곧 자아 성찰의 과정입니다.";
+                feedback = `⭐ 학생의 해석이 시의 보편적인 의미와 잘 연결됩니다. 특히 ${word}이/가 추억이나 이상과 관련된다고 본 점이 탁월합니다. 표준 해설에 따르면, ${standardizedMeaning}`;
+            } else if (word.includes("부끄러운 이름")) {
+                standardizedMeaning = "'부끄러운 이름'은 일제강점기라는 현실 속에서 무력하게 살아가는 자신에 대한 자책감과 죄의식을 담고 있습니다.";
+                feedback = `🤔 ${word}을/를 '자기반성'의 의미로 해석한 부분이 정확합니다. 다만, 이 부끄러움이 단순한 개인의 감정이 아니라 시대적인 상황(일제강점기)에서 비롯된 지식인의 고뇌와 연결된다는 점을 추가하면 더 깊이 있는 해석이 될 수 있습니다. 표준 해설: ${standardizedMeaning}`;
+            } else if (word.includes("잔디") || word.includes("풀이 무성할 거외다")) {
+                 standardizedMeaning = "죽음과 희생(무덤)을 넘어 새로운 생명이 싹트는 미래, 즉 시인의 희생을 발판으로 이루어질 조국의 해방에 대한 확신과 소망을 상징합니다.";
+                 feedback = `💡 ${word}을/를 희망이나 미래와 연결하여 본 해석은 매우 좋습니다. '무덤 위에 파란 잔디'는 시인의 희생이 헛되지 않을 것이라는 강한 의지를 보여줍니다. 표준 해설: ${standardizedMeaning}`;
+            } else {
+                standardizedMeaning = "해당 시어에 대한 보편적인 문학적 해설이 없는 경우입니다. 학생의 창의적인 해석을 높이 평가합니다!";
+                feedback = `✍️ ${word}에 대한 학생의 독창적인 해석이 흥미롭습니다. 이 시어는 다양한 관점으로 해석될 여지가 많습니다. 계속해서 자신만의 관점을 발전시켜 보세요.`;
+            }
+
+            // 최종 피드백 출력
+            feedbackArea.innerHTML = `
+                <p style="color: #4a90e2; font-weight: bold;">[AI 종합 피드백 결과]</p>
+                <p>• 학생의 해석: ${interpretation.slice(0, 40)}...</p>
+                <p>• AI 검토 의견: ${feedback}</p>
+                <p style="margin-top: 10px; font-size: 0.9em; color: #666;">※ AI는 보편적인 해석을 제공합니다. 문학에는 정답이 없습니다.</p>
+            `;
+
+            // 입력 필드 초기화
+            document.getElementById('wordInput').value = "";
+            document.getElementById('interpretation').value = "";
+        }
+    </script>
+</body>
+</html>
